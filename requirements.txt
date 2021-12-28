@@ -10,8 +10,12 @@ futures==2.2.0
 goslate==1.5.2
 idna==3.3
 lxml==4.7.1
+pyaes==1.6.1
+pyasn1==0.4.8
 pymorphy2==0.9.1
 pymorphy2-dicts-ru==2.4.417127.4579844
 requests==2.26.0
+rsa==4.8
 soupsieve==2.3.1
+Telethon==1.24.0
 urllib3==1.26.7
