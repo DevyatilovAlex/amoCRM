@@ -3,11 +3,13 @@ import re
 import time
 import json
 import base64
-import pprint
+import random
 import requests
 import colorama
+from pprint import pprint
 from bs4 import BeautifulSoup
 from fake_useragent import UserAgent
+
 
 HEADERS = {
     'User-Agent': UserAgent().random,
@@ -63,19 +65,18 @@ def get_proxy(markup):
     return proxy_list
 
 
-def parser_proxy(headers, time_sleep=1, timeout=5):
-    # session = create_session(headers, timeout)
-    pagination_page = 5
+def parser_proxy(headers, time_sleep=(2, 5), timeout=5):
     proxy_list = []
+    pagination_page = 5
+    session = create_session(headers, timeout)
     for page in range(1, pagination_page + 1):
-        # url = f'http://free-proxy.cz/en/proxylist/main/speed/{page}'
-        # response_text = session(url)
-        with open(f'data/proxy_speed_{page}.html') as f:
-            response_text = f.read()
-        new_proxy = get_proxy(response_text)
-        proxy_list.extend(new_proxy)
+        url = f'http://free-proxy.cz/en/proxylist/main/speed/{page}'
+        response_text = session(url)
+        if response_text:
+            new_proxy = get_proxy(response_text)
+            proxy_list.extend(new_proxy)
 
-        # time.sleep(time_sleep)
+        time.sleep(random.randint(*time_sleep))
 
     return proxy_list
 
@@ -96,4 +97,4 @@ def generate_proxy(proxy):
 if __name__ == '__main__':
     proxy_list = parser_proxy(HEADERS)
     save_json(proxy_list)
-    print(generate_proxy(proxy_list))
+    pprint(list(generate_proxy(proxy_list)))
